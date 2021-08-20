@@ -5,7 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+
 import java.util.UUID;
 
 import com.product.demoapi.model.Producto;
@@ -80,16 +80,14 @@ public class ProductoController {
     }
     
     @PutMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Producto> update(@RequestBody Producto update){
-        Optional<Producto> part = productos.findById(update.getId());
-        if(part.isPresent()){
-            Producto p = part.get();
-            p.setDescripcion(update.getDescripcion());
-            add(p);
+    public ResponseEntity<Producto> update(@PathVariable Producto id){
+          
 
-            return new ResponseEntity<Producto>(p, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<Producto>(HttpStatus.NOT_FOUND);
+        if(productos.containsKey(id)){
+            Producto p0 = productos.get(id);
+            p0.setDescripcion(id.getDescripcion());
+            add(p0);
         }
+        return new ResponseEntity<Producto>(HttpStatus.OK);
     }
 }
